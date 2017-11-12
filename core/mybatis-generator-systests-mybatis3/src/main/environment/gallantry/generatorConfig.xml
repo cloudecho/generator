@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+       Copyright 2006-2017 the original author or authors.
+
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+
+-->
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="database.properties"/>
+
+    <context id="miscellaneousTests" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+            <property name="searchString" value="Example$"/>
+            <property name="replaceString" value="Criteria"/>
+        </plugin>
+        <plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin"/>
+
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="org.hsqldb.jdbcDriver"
+                        connectionURL="jdbc:hsqldb:mem:aname"
+                        userId="sa"/>
+
+        <javaModelGenerator targetPackage="mbg.test.mb3.generated.miscellaneous.model" targetProject="MAVEN">
+            <property name="trimStrings" value="true"/>
+            <property name="rootClass" value="mbg.test.common.BaseClass"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mbg.test.mb3.generated.miscellaneous.xml" targetProject="MAVEN">
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="mbg.test.mb3.generated.miscellaneous.mapper"
+                             targetProject="MAVEN">
+            <property name="rootInterface" value="mbg.test.common.BaseInterface"/>
+            <property name="methodNameCalculator" value="EXTENDED"/>
+        </javaClientGenerator>
+
+        <table tableName="PKFields" domainObjectName="MyObject" mapperName="MyMapper" alias="A">
+            <ignoreColumn column="fred"/> <!-- should generate a warning -->
+            <ignoreColumn column="decimal30Field"/>
+            <columnOverride column="datefield" property="startDate"/>
+            <columnOverride column="decimal155Field" javaType="java.lang.Double"/>
+            <columnOverride column="decimal60Field" javaType="int"/>
+            <columnOverride column="firstName" javaType="mbg.test.common.FirstName"
+                            typeHandler="mbg.test.mb3.common.FirstNameTypeHandler"/>
+            <columnOverride column="timeField" javaType="mbg.test.common.MyTime"
+                            typeHandler="mbg.test.mb3.common.MyTimeTypeHandler"/>
+            <columnOverride column="wierd$Field" delimitedColumnName="true"/>
+        </table>
+
+        <table tableName="PKFieldsBlobs" />
+    </context>
+</generatorConfiguration>
