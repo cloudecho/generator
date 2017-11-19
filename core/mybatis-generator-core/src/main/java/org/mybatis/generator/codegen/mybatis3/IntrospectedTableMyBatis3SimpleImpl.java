@@ -17,6 +17,7 @@ package org.mybatis.generator.codegen.mybatis3;
 
 import java.util.List;
 
+import org.mybatis.generator.api.GeneratedJavaFile;
 import org.mybatis.generator.api.ProgressCallback;
 import org.mybatis.generator.codegen.AbstractJavaClientGenerator;
 import org.mybatis.generator.codegen.AbstractJavaGenerator;

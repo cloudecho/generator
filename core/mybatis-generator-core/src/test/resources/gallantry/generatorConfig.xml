@@ -24,6 +24,7 @@
     <!--<properties resource="database.properties"/>-->
 
     <context id="gallantry" targetRuntime="MyBatis3Simple">
+        <plugin type="org.mybatis.generator.plugins.RepositoryPlugin"/>
         <plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin"/>
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
@@ -44,7 +45,7 @@
 
         <javaModelGenerator targetPackage="mbg.generated.gallantry.model" targetProject="/Users/echo/generated-sources/mybatis-generator">
             <property name="trimStrings" value="true"/>
-            <property name="rootClass" value="mbg.test.common.BaseClass"/>
+            <!--<property name="rootClass" value="mbg.test.common.BaseClass"/>-->
         </javaModelGenerator>
 
         <sqlMapGenerator targetPackage="mappers" targetProject="/Users/echo/generated-sources/mybatis-generator"/>

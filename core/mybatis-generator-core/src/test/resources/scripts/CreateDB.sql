@@ -62,6 +62,8 @@ create table PKFields (
   "wierd$Field" int,
   "birth date" date,
   stringBoolean char(1),
+  created_date date,
+  version BIGINT,
   primary key (id2, id1)
 );
 

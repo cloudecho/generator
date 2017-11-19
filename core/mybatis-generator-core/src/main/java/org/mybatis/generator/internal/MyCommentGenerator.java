@@ -15,6 +15,8 @@
  */
 package org.mybatis.generator.internal;
 
+import java.util.List;
+
 import org.mybatis.generator.api.CommentGenerator;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
@@ -25,11 +27,19 @@ import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.internal.util.StringUtility;
 
 /**
- * The Class MyCommentGenerator which extends from {@link DefaultCommentGenerator}.
+ * The Class MyCommentGenerator which extends from {@link DefaultCommentGenerator}, for spring-data-mybatis.
  *
  * @author yong.ma
  */
 public class MyCommentGenerator extends DefaultCommentGenerator implements CommentGenerator {
+    static enum ReservedColumn {
+        Version,
+        CreatedDate,
+        LastModifiedDate,
+        CreatedBy,
+        LastModifiedBy
+    }
+
     public MyCommentGenerator() {
         super();
         addRemarkComments = true;
@@ -79,7 +89,9 @@ public class MyCommentGenerator extends DefaultCommentGenerator implements Comme
         topLevelClass.addJavaDocLine(" */");
 
         //Annotation
+        topLevelClass.addImportedType("org.springframework.data.annotation.*");
         topLevelClass.addImportedType("org.springframework.data.mybatis.annotations.*");
+        topLevelClass.addStaticImport("org.springframework.data.mybatis.annotations.Id.GenerationType.AUTO");
         topLevelClass.addAnnotation("@Entity(table = \"" + introspectedTable.getFullyQualifiedTable() + "\")");
     }
 
@@ -90,6 +102,21 @@ public class MyCommentGenerator extends DefaultCommentGenerator implements Comme
     @Override
     public void addFieldComment(Field field, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn) {
         this.addJavaElementComment(field, introspectedColumn);
+
+        //@Id
+        List<IntrospectedColumn> primaryKeyColumns = introspectedTable.getPrimaryKeyColumns();
+        if (primaryKeyColumns.size() == 1 && primaryKeyColumns.contains(introspectedColumn)) {
+            field.addAnnotation("@Id(strategy = GenerationType.AUTO)");
+        }
+
+        //@Reserved
+        for (ReservedColumn reservedColumn : ReservedColumn.values()) {
+            if (introspectedColumn.getJavaProperty().equalsIgnoreCase(reservedColumn.name())) {
+                field.addAnnotation("@" + reservedColumn.name());
+            }
+        }
+
+        //@Column
         field.addAnnotation("@Column(name = \"" + introspectedColumn.getActualColumnName() + "\")");
     }
 
