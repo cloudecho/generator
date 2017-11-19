@@ -42,19 +42,23 @@ public class RepositoryPlugin extends PluginAdapter {
 
     @Override
     public List<GeneratedJavaFile> contextGenerateAdditionalJavaFiles(IntrospectedTable introspectedTable) {
-        GeneratedJavaFile gjf = new GeneratedJavaFile(compilationUnit(introspectedTable),
-                context.getJavaModelGeneratorConfiguration()
-                        .getTargetProject(),
+        GeneratedJavaFile gjf = new GeneratedJavaFile(
+                compilationUnit(introspectedTable),
+                context.getJavaModelGeneratorConfiguration().getTargetProject(),
                 context.getProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING),
                 context.getJavaFormatter());
 
         return Arrays.asList(gjf);
     }
 
+    private String fullTypeSpecification(IntrospectedTable introspectedTable) {
+        return introspectedTable.getBaseRecordType()
+                .replaceAll("\\.(domain|model)", "." + REPOSITORY_SUFFIX.toLowerCase())
+                + REPOSITORY_SUFFIX;
+    }
 
-    public CompilationUnit compilationUnit(IntrospectedTable introspectedTable) {
-        FullyQualifiedJavaType type = new FullyQualifiedJavaType(
-                introspectedTable.getBaseRecordType() + REPOSITORY_SUFFIX);
+    private CompilationUnit compilationUnit(IntrospectedTable introspectedTable) {
+        FullyQualifiedJavaType type = new FullyQualifiedJavaType(fullTypeSpecification(introspectedTable));
         Interface repoInterface = new Interface(type);
         repoInterface.setVisibility(JavaVisibility.PUBLIC);
 
