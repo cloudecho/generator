@@ -152,6 +152,9 @@
                 <mybatis.generator.configurationFile>src/main/environment/gallantry/generatorConfig.xml
                 </mybatis.generator.configurationFile>
             </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
     </profiles>
 </project>

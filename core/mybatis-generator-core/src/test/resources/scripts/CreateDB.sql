@@ -1,5 +1,5 @@
 --
---    Copyright 2006-2016 the original author or authors.
+--    Copyright 2006-2017 the original author or authors.
 --
 --    Licensed under the Apache License, Version 2.0 (the "License");
 --    you may not use this file except in compliance with the License.
@@ -64,6 +64,10 @@ create table PKFields (
   stringBoolean char(1),
   primary key (id2, id1)
 );
+
+COMMENT ON COLUMN PKFields.firstName is '名';
+COMMENT ON COLUMN PKFields.lastName is '姓';
+COMMENT ON COLUMN PKFields."birth date" is '出生日期';
 
 create table PKBlobs (
   id int not null,

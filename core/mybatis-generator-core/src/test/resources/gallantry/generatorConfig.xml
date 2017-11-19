@@ -21,9 +21,9 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <properties resource="database.properties"/>
+    <!--<properties resource="database.properties"/>-->
 
-    <context id="miscellaneousTests" targetRuntime="MyBatis3Simple">
+    <context id="gallantry" targetRuntime="MyBatis3Simple">
         <plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin"/>
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
@@ -33,7 +33,7 @@
             <property name="replaceString" value="Criteria"/>
         </plugin>
 
-        <commentGenerator>
+        <commentGenerator type="org.mybatis.generator.internal.MyCommentGenerator">
             <property name="suppressDate" value="true"/>
             <property name="addRemarkComments" value="true"/>
         </commentGenerator>
@@ -42,20 +42,20 @@
                         connectionURL="jdbc:hsqldb:mem:aname"
                         userId="sa"/>
 
-        <javaModelGenerator targetPackage="mbg.test.mb3.generated.miscellaneous.model" targetProject="MAVEN">
+        <javaModelGenerator targetPackage="mbg.generated.gallantry.model" targetProject="/Users/echo/generated-sources/mybatis-generator">
             <property name="trimStrings" value="true"/>
             <property name="rootClass" value="mbg.test.common.BaseClass"/>
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="mappers" targetProject="MAVEN"/>
+        <sqlMapGenerator targetPackage="mappers" targetProject="/Users/echo/generated-sources/mybatis-generator"/>
         <!--
-        <javaClientGenerator type="XMLMAPPER" targetPackage="mbg.test.mb3.generated.miscellaneous.mapper"
-                             targetProject="MAVEN">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="mbg.generated.gallantry.mapper"
+                             targetProject="/Users/echo/generated-sources/mybatis-generator">
             <property name="rootInterface" value="mbg.test.common.BaseInterface"/>
             <property name="methodNameCalculator" value="EXTENDED"/>
         </javaClientGenerator>-->
 
-        <table tableName="PKFields" domainObjectName="MyObject" mapperName="MyMapper" alias="A">
+        <table tableName="PKFields" domainObjectName="MyObject" mapperName="MyMapper">
             <ignoreColumn column="fred"/> <!-- should generate a warning -->
             <ignoreColumn column="decimal30Field"/>
             <columnOverride column="datefield" property="startDate"/>
