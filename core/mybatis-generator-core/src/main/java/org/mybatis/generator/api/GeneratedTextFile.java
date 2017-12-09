@@ -15,8 +15,6 @@
  */
 package org.mybatis.generator.api;
 
-import org.mybatis.generator.api.dom.xml.Document;
-
 /**
  * The Class GeneratedTextFile.
  *
