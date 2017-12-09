@@ -29,6 +29,13 @@ import org.mybatis.generator.config.xml.ConfigurationParser;
 import org.mybatis.generator.internal.DefaultShellCallback;
 
 public class GallantryMyBatisGeneratorTest {
+    static Set<String> CONTEXT_SET = new HashSet<String>();
+
+    static {
+        //    CONTEXT_SET.add("test");
+        CONTEXT_SET.add("mysql");
+    }
+
     @Before
     public void createDatabase() throws Exception {
         SqlScriptRunner scriptRunner = new SqlScriptRunner(getClass().getResourceAsStream("/scripts/CreateDB.sql"), "org.hsqldb.jdbcDriver", "jdbc:hsqldb:mem:aname", "sa", "");
@@ -42,7 +49,7 @@ public class GallantryMyBatisGeneratorTest {
         Configuration config = cp.parseConfiguration(getClass().getResourceAsStream("/gallantry/generatorConfig.xml"));
         DefaultShellCallback shellCallback = new DefaultShellCallback(true);
         MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, shellCallback, warnings);
-        myBatisGenerator.generate(null, null, null, true);
+        myBatisGenerator.generate(null, CONTEXT_SET, null, true);
 
         for (String w : warnings) {
             System.out.println("WARN: " + w);

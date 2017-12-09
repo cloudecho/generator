@@ -90,7 +90,9 @@ public class MyCommentGenerator extends DefaultCommentGenerator implements Comme
 
         //Annotation
         topLevelClass.addImportedType("org.springframework.data.annotation.*");
-        topLevelClass.addImportedType("org.springframework.data.mybatis.annotations.*");
+        topLevelClass.addImportedType("org.springframework.data.mybatis.annotations.Column");
+        topLevelClass.addImportedType("org.springframework.data.mybatis.annotations.Entity");
+        topLevelClass.addImportedType("org.springframework.data.mybatis.annotations.Id");
         topLevelClass.addStaticImport("org.springframework.data.mybatis.annotations.Id.GenerationType.AUTO");
         topLevelClass.addAnnotation("@Entity(table = \"" + introspectedTable.getFullyQualifiedTable() + "\")");
     }
@@ -106,7 +108,7 @@ public class MyCommentGenerator extends DefaultCommentGenerator implements Comme
         //@Id
         List<IntrospectedColumn> primaryKeyColumns = introspectedTable.getPrimaryKeyColumns();
         if (primaryKeyColumns.size() == 1 && primaryKeyColumns.contains(introspectedColumn)) {
-            field.addAnnotation("@Id(strategy = GenerationType.AUTO)");
+            field.addAnnotation("@Id(strategy = AUTO)");
         }
 
         //@Reserved

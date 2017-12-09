@@ -22,8 +22,39 @@
 
 <generatorConfiguration>
     <!--<properties resource="database.properties"/>-->
+    <context id="mysql" targetRuntime="MyBatis3Simple">
+        <plugin type="org.mybatis.generator.plugins.RepositoryPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.DtoPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+            <property name="searchString" value="Example$"/>
+            <property name="replaceString" value="Criteria"/>
+        </plugin>
 
-    <context id="gallantry" targetRuntime="MyBatis3Simple">
+        <commentGenerator type="org.mybatis.generator.internal.MyCommentGenerator">
+            <property name="suppressDate" value="true"/>
+            <property name="addRemarkComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://dbserver:3306/zheng?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true"
+                        userId="zheng"
+                        password="123456"/>
+
+        <javaModelGenerator targetPackage="mbg.generated.gallantry.model" targetProject="/Users/echo/generated-sources/mybatis-generator">
+            <property name="trimStrings" value="true"/>
+            <!--<property name="rootClass" value="mbg.test.common.BaseClass"/>-->
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="mappers" targetProject="/Users/echo/generated-sources/mybatis-generator"/>
+
+        <table tableName="upms_organization" />
+    </context>
+
+    <context id="test" targetRuntime="MyBatis3Simple">
         <plugin type="org.mybatis.generator.plugins.RepositoryPlugin"/>
         <plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin"/>
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
