@@ -18,22 +18,22 @@ package org.mybatis.generator.api;
 import org.mybatis.generator.api.dom.xml.Document;
 
 /**
- * The Class GeneratedHtmlFile.
+ * The Class GeneratedTextFile.
  *
  * @author yong.ma
  */
-public class GeneratedHtmlFile extends GeneratedXmlFile {
+public class GeneratedTextFile extends GeneratedXmlFile {
     private final String formattedContent;
 
     /**
-     * Instantiates a new generated html file.
+     * Instantiates a new generated text file.
      *
-     * @param formattedContent the html content
+     * @param formattedContent the text content
      * @param fileName         the file name
      * @param targetPackage    the target package
      * @param targetProject    the target project
      */
-    public GeneratedHtmlFile(String formattedContent, String fileName, String targetPackage, String targetProject) {
+    public GeneratedTextFile(String formattedContent, String fileName, String targetPackage, String targetProject) {
         super(null, fileName, targetPackage, targetProject, false, null);
         this.formattedContent = formattedContent;
     }

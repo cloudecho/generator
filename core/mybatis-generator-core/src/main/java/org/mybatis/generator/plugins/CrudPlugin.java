@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.mybatis.generator.api.GeneratedHtmlFile;
+import org.mybatis.generator.api.GeneratedTextFile;
 import org.mybatis.generator.api.GeneratedXmlFile;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
@@ -61,7 +61,7 @@ public class CrudPlugin extends PluginAdapter {
                 StringWriter stringWriter = new StringWriter();
                 template.process(map, stringWriter);
 
-                GeneratedHtmlFile generatedHtmlFile = new GeneratedHtmlFile(
+                GeneratedTextFile generatedHtmlFile = new GeneratedTextFile(
                         stringWriter.toString(),
                         ftl.replaceAll("\\.ftl$", ""),
                         targetPackage(introspectedTable),
@@ -133,6 +133,5 @@ public class CrudPlugin extends PluginAdapter {
         public boolean isPk() {
             return pk;
         }
-
     }
 }
