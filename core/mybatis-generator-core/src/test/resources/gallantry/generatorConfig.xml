@@ -25,6 +25,7 @@
     <context id="mysql" targetRuntime="MyBatis3Simple">
         <plugin type="org.mybatis.generator.plugins.RepositoryPlugin"/>
         <plugin type="org.mybatis.generator.plugins.DtoPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.CrudPlugin"/>
         <plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin"/>
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
