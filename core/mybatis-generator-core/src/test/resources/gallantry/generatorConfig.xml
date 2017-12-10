@@ -22,7 +22,7 @@
 
 <generatorConfiguration>
     <!--<properties resource="database.properties"/>-->
-    <context id="mysql" targetRuntime="MyBatis3Simple">
+    <context id="gallantry" targetRuntime="MyBatis3Simple">
         <plugin type="org.mybatis.generator.plugins.RepositoryPlugin"/>
         <plugin type="org.mybatis.generator.plugins.DtoPlugin"/>
         <plugin type="org.mybatis.generator.plugins.CrudPlugin"/>

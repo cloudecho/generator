@@ -33,7 +33,7 @@ public class GallantryMyBatisGeneratorTest {
 
     static {
         //    CONTEXT_SET.add("test");
-        CONTEXT_SET.add("mysql");
+        CONTEXT_SET.add("gallantry");
     }
 
     @Before

@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div id="updateDialog" class="crudDialog">
-	<input id="entityId" type="hidden" th:value="${r"${organization.organizationId}"}"/>
+	<input id="entityId" type="hidden" th:value="${r"${"}${simpleEntityName}.${idField}${r"}"}"/>
 	<form id="updateForm" method="post">
 	<#list columns as col><#if !col.pk>
 		<div class="form-group">

@@ -15,66 +15,45 @@
  */
 package org.mybatis.generator.plugins;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.mybatis.generator.api.GeneratedTextFile;
-import org.mybatis.generator.api.GeneratedXmlFile;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
-import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.internal.util.StringUtility;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-
 /**
- * This plugin generates XxxRepository.java for spring-data-mybatis.
+ * This plugin generates CRUD html.
  *
  * @author yong.ma
  */
-public class CrudPlugin extends PluginAdapter {
-    public boolean validate(List<String> warnings) {
-        // this plugin is always valid
-        return true;
+public class CrudPlugin extends AbstractTextPlugin {
+
+    @Override
+    protected List<String> getTemplateNames() {
+        return Arrays.asList("index.html.ftl", "create.html.ftl", "update.html.ftl");
     }
 
     @Override
-    public List<GeneratedXmlFile> contextGenerateAdditionalXmlFiles(IntrospectedTable introspectedTable) {
-        Configuration configuration = new Configuration(Configuration.VERSION_2_3_23);
-        configuration.setClassForTemplateLoading(CrudPlugin.class, "/templates");
-
+    protected Map<String, Object> getTemplateData(IntrospectedTable introspectedTable) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("tableRemark", remark(introspectedTable));
         map.put("idField", introspectedTable.getPrimaryKeyColumns().get(0).getJavaProperty());
         map.put("simpleEntityName", simpleEntityName(introspectedTable));
         map.put("columns", columnInfos(introspectedTable));
 
-        List<GeneratedXmlFile> result = new ArrayList<GeneratedXmlFile>();
-        for (final String ftl : Arrays.asList("index.html.ftl", "create.html.ftl", "update.html.ftl")) {
-            try {
-                Template template = configuration.getTemplate(ftl);
-                StringWriter stringWriter = new StringWriter();
-                template.process(map, stringWriter);
-
-                GeneratedTextFile generatedHtmlFile = new GeneratedTextFile(
-                        stringWriter.toString(),
-                        ftl.replaceAll("\\.ftl$", ""),
-                        targetPackage(introspectedTable),
-                        context.getJavaModelGeneratorConfiguration().getTargetProject());
-                result.add(generatedHtmlFile);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-        return result;
+        return map;
     }
 
-    private String targetPackage(IntrospectedTable introspectedTable) {
+    @Override
+    protected String getFileName(String ftl) {
+        return ftl.replaceAll("\\.ftl$", "");
+    }
+
+    protected String getTargetPackage(IntrospectedTable introspectedTable) {
         return context.getJavaModelGeneratorConfiguration().getTargetPackage()
                 + "/html-" + simpleEntityName(introspectedTable);
     }
