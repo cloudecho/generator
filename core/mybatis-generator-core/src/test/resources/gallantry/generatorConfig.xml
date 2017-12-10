@@ -25,7 +25,8 @@
     <context id="gallantry" targetRuntime="MyBatis3Simple">
         <plugin type="org.mybatis.generator.plugins.RepositoryPlugin"/>
         <plugin type="org.mybatis.generator.plugins.DtoPlugin"/>
-        <plugin type="org.mybatis.generator.plugins.CrudPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.CrudHtmlPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.ServiceAndControllerPlugin"/>
         <plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin"/>
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>

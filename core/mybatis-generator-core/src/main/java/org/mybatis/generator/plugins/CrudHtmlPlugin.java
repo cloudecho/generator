@@ -30,7 +30,7 @@ import org.mybatis.generator.internal.util.StringUtility;
  *
  * @author yong.ma
  */
-public class CrudPlugin extends AbstractTextPlugin {
+public class CrudHtmlPlugin extends AbstractTextPlugin {
 
     @Override
     protected List<String> getTemplateNames() {
@@ -49,13 +49,14 @@ public class CrudPlugin extends AbstractTextPlugin {
     }
 
     @Override
-    protected String getFileName(String ftl) {
+    protected String getFileName(String ftl, IntrospectedTable introspectedTable) {
         return ftl.replaceAll("\\.ftl$", "");
     }
 
-    protected String getTargetPackage(IntrospectedTable introspectedTable) {
+    protected String getTargetPackage(String ftl, IntrospectedTable introspectedTable) {
         return context.getJavaModelGeneratorConfiguration().getTargetPackage()
-                + "/html-" + simpleEntityName(introspectedTable);
+                .replaceAll("\\.(domain|model)", ".html")
+                + "." + simpleEntityName(introspectedTable);
     }
 
     private String remark(IntrospectedTable introspectedTable) {

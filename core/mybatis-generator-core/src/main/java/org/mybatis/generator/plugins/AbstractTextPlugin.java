@@ -38,9 +38,9 @@ public abstract class AbstractTextPlugin extends PluginAdapter {
 
     protected abstract Map<String, Object> getTemplateData(IntrospectedTable introspectedTable);
 
-    protected abstract String getFileName(String ftl);
+    protected abstract String getFileName(String ftl, IntrospectedTable introspectedTable);
 
-    protected abstract String getTargetPackage(IntrospectedTable introspectedTable);
+    protected abstract String getTargetPackage(String ftl, IntrospectedTable introspectedTable);
 
     public boolean validate(List<String> warnings) {
         // this plugin is always valid
@@ -62,8 +62,8 @@ public abstract class AbstractTextPlugin extends PluginAdapter {
 
                 GeneratedTextFile generatedTextFile = new GeneratedTextFile(
                         stringWriter.toString(),
-                        getFileName(ftl),
-                        getTargetPackage(introspectedTable),
+                        getFileName(ftl, introspectedTable),
+                        getTargetPackage(ftl, introspectedTable),
                         context.getJavaModelGeneratorConfiguration().getTargetProject());
                 result.add(generatedTextFile);
             } catch (Exception ex) {
