@@ -15,7 +15,7 @@ import ${repositoryJavaType};
 @Lazy
 public class ${modelJavaName}ServiceImpl
         extends MyBaseServiceImpl<${modelJavaName}, ${idJavaType}>
-        implements ${servicePackage}.${modelJavaName}Service {
+        implements ${modelJavaName}Service {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(${modelJavaName}ServiceImpl.class);
 

@@ -31,7 +31,6 @@ import org.mybatis.generator.internal.util.StringUtility;
 public class ServiceAndControllerPlugin extends AbstractTextPlugin {
     static final String CONTROLLER_SUFFIX = "Controller";
     static final String SERVICE_SUFFIX = "Service";
-    static final String REPOSITORY_SUFFIX = "Repository";
     static final String IMPL_PKG_SUFFIX = ".impl";
 
 
@@ -53,7 +52,7 @@ public class ServiceAndControllerPlugin extends AbstractTextPlugin {
         map.put("modelJavaType", introspectedTable.getBaseRecordType());
         map.put("modelJavaName", modelJavaName(introspectedTable));
         map.put("modelJavaNameFirstLower", StringUtility.firstLowerCase(modelJavaName(introspectedTable)));
-        map.put("idJavaType", introspectedTable.getPrimaryKeyColumns().get(0).getFullyQualifiedJavaType());
+        map.put("idJavaType", introspectedTable.getPrimaryKeyColumns().get(0).getFullyQualifiedJavaType().getShortName());
         map.put("repositoryJavaType", repositoryJavaType(introspectedTable));
 
         map.put("controllerPackage", getTargetPackage(CONTROLLER_SUFFIX, introspectedTable));
@@ -84,9 +83,7 @@ public class ServiceAndControllerPlugin extends AbstractTextPlugin {
     }
 
     private String repositoryJavaType(IntrospectedTable introspectedTable) {
-        return introspectedTable.getBaseRecordType()
-                .replaceAll("\\.(domain|model)", "." + REPOSITORY_SUFFIX.toLowerCase())
-                + REPOSITORY_SUFFIX;
+        return RepositoryPlugin.fullTypeSpecification(introspectedTable);
     }
 
     private String remark(IntrospectedTable introspectedTable) {

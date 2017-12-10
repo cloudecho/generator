@@ -51,7 +51,7 @@ public class RepositoryPlugin extends PluginAdapter {
         return Arrays.asList(gjf);
     }
 
-    private String fullTypeSpecification(IntrospectedTable introspectedTable) {
+    static String fullTypeSpecification(IntrospectedTable introspectedTable) {
         return introspectedTable.getBaseRecordType()
                 .replaceAll("\\.(domain|model)", "." + REPOSITORY_SUFFIX.toLowerCase())
                 + REPOSITORY_SUFFIX;
@@ -65,11 +65,11 @@ public class RepositoryPlugin extends PluginAdapter {
         // TODO composite primary key
         FullyQualifiedJavaType superInterface = new FullyQualifiedJavaType(
                 "MybatisRepository<"
-                        + introspectedTable.getBaseRecordType() + ", "
+                        + introspectedTable.getFullyQualifiedTable().getDomainObjectName() + ", "
                         + introspectedTable.getPrimaryKeyColumns().get(0).getFullyQualifiedJavaType() + ">");
         repoInterface.addSuperInterface(superInterface);
         repoInterface.addImportedType(new FullyQualifiedJavaType("org.springframework.data.mybatis.repository.support.MybatisRepository"));
-
+        repoInterface.addImportedType(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
         return repoInterface;
     }
 
