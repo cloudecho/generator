@@ -103,12 +103,14 @@ public class ServiceAndControllerPlugin extends AbstractTextPlugin {
     }
 
     private String simpleEntityName(IntrospectedTable introspectedTable) {
-        String[] remarks = String.valueOf(introspectedTable.getFullyQualifiedTable()).split("_");
-        return remarks[remarks.length - 1].toLowerCase();
+        String remarks = String.valueOf(introspectedTable.getFullyQualifiedTable());
+        int k = remarks.indexOf('_');
+        return (k > 0 ? remarks.substring(k + 1) : remarks).toLowerCase();
     }
 
     private String simpleModuleName(IntrospectedTable introspectedTable) {
-        String[] remarks = String.valueOf(introspectedTable.getFullyQualifiedTable()).split("_");
-        return remarks[0].toLowerCase();
+        String remarks = String.valueOf(introspectedTable.getFullyQualifiedTable());
+        int k = remarks.indexOf('_');
+        return (k > 0 ? remarks.substring(0, k) : remarks).toLowerCase();
     }
 }
