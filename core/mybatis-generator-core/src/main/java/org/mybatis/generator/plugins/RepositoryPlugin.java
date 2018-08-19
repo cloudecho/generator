@@ -41,36 +41,47 @@ public class RepositoryPlugin extends PluginAdapter {
     }
 
     @Override
-    public List<GeneratedJavaFile> contextGenerateAdditionalJavaFiles(IntrospectedTable introspectedTable) {
+    public List<GeneratedJavaFile> contextGenerateAdditionalJavaFiles(
+        IntrospectedTable introspectedTable) {
         GeneratedJavaFile gjf = new GeneratedJavaFile(
-                compilationUnit(introspectedTable),
-                context.getJavaModelGeneratorConfiguration().getTargetProject(),
-                context.getProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING),
-                context.getJavaFormatter());
+            compilationUnit(introspectedTable),
+            context.getJavaModelGeneratorConfiguration().getTargetProject(),
+            context.getProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING),
+            context.getJavaFormatter());
 
         return Arrays.asList(gjf);
     }
 
     static String fullTypeSpecification(IntrospectedTable introspectedTable) {
         return introspectedTable.getBaseRecordType()
-                .replaceAll("\\.(domain|model)", "." + REPOSITORY_SUFFIX.toLowerCase())
-                + REPOSITORY_SUFFIX;
+            .replaceAll("\\.(domain|model)", "." + REPOSITORY_SUFFIX.toLowerCase())
+            + REPOSITORY_SUFFIX;
     }
 
     private CompilationUnit compilationUnit(IntrospectedTable introspectedTable) {
-        FullyQualifiedJavaType type = new FullyQualifiedJavaType(fullTypeSpecification(introspectedTable));
+        FullyQualifiedJavaType type =
+            new FullyQualifiedJavaType(fullTypeSpecification(introspectedTable));
         Interface repoInterface = new Interface(type);
         repoInterface.setVisibility(JavaVisibility.PUBLIC);
 
         // TODO composite primary key
         FullyQualifiedJavaType superInterface = new FullyQualifiedJavaType(
-                "MybatisRepository<"
-                        + introspectedTable.getFullyQualifiedTable().getDomainObjectName() + ", "
-                        + introspectedTable.getPrimaryKeyColumns().get(0).getFullyQualifiedJavaType() + ">");
+            "MybatisRepository<"
+                + introspectedTable.getFullyQualifiedTable().getDomainObjectName() + ", "
+                + idType(introspectedTable) + ">");
         repoInterface.addSuperInterface(superInterface);
-        repoInterface.addImportedType(new FullyQualifiedJavaType("org.springframework.data.mybatis.repository.support.MybatisRepository"));
-        repoInterface.addImportedType(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
+        repoInterface.addImportedType(new FullyQualifiedJavaType(
+            "org.springframework.data.mybatis.repository.support.MybatisRepository"));
+        repoInterface
+            .addImportedType(new FullyQualifiedJavaType(introspectedTable.getBaseRecordType()));
         return repoInterface;
     }
 
+    private Object idType(IntrospectedTable introspectedTable) {
+        if (introspectedTable.getPrimaryKeyColumns().size() > 1) {
+            return introspectedTable.getFullyQualifiedTable().getDomainObjectName() + "Key";
+        } else {
+            return introspectedTable.getPrimaryKeyColumns().get(0).getFullyQualifiedJavaType();
+        }
+    }
 }
