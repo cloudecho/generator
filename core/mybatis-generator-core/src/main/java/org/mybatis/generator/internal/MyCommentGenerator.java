@@ -76,7 +76,8 @@ public class MyCommentGenerator extends DefaultCommentGenerator implements Comme
     }
 
     @Override
-    public void addModelClassComment(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+    public void addModelClassComment(TopLevelClass topLevelClass,
+        IntrospectedTable introspectedTable) {
         if (suppressAllComments || !addRemarkComments) {
             return;
         }
@@ -93,8 +94,10 @@ public class MyCommentGenerator extends DefaultCommentGenerator implements Comme
         topLevelClass.addImportedType("org.springframework.data.mybatis.annotations.Column");
         topLevelClass.addImportedType("org.springframework.data.mybatis.annotations.Entity");
         topLevelClass.addImportedType("org.springframework.data.mybatis.annotations.Id");
-        topLevelClass.addStaticImport("org.springframework.data.mybatis.annotations.Id.GenerationType.AUTO");
-        topLevelClass.addAnnotation("@Entity(table = \"" + introspectedTable.getFullyQualifiedTable() + "\")");
+        topLevelClass
+            .addStaticImport("org.springframework.data.mybatis.annotations.Id.GenerationType.AUTO");
+        topLevelClass.addAnnotation(
+            "@Entity(table = \"" + introspectedTable.getFullyQualifiedTable() + "\")");
     }
 
     @Override
@@ -102,13 +105,15 @@ public class MyCommentGenerator extends DefaultCommentGenerator implements Comme
     }
 
     @Override
-    public void addFieldComment(Field field, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn) {
+    public void addFieldComment(Field field, IntrospectedTable introspectedTable,
+        IntrospectedColumn introspectedColumn) {
         this.addJavaElementComment(field, introspectedColumn);
 
         //@Id
         List<IntrospectedColumn> primaryKeyColumns = introspectedTable.getPrimaryKeyColumns();
-        if (primaryKeyColumns.size() == 1 && primaryKeyColumns.contains(introspectedColumn)) {
-            field.addAnnotation("@Id(strategy = AUTO)");
+        if (primaryKeyColumns.contains(introspectedColumn)) {
+            field.addAnnotation(String.format("@Id(strategy = AUTO%s)",
+                primaryKeyColumns.size() > 1 ? ", composite = true" : ""));
         }
 
         //@Reserved
@@ -123,19 +128,21 @@ public class MyCommentGenerator extends DefaultCommentGenerator implements Comme
     }
 
     public void addGeneralMethodComment(Method method,
-            IntrospectedTable introspectedTable) {
+        IntrospectedTable introspectedTable) {
         method.addJavaDocLine("/**");
         addJavadocTag(method, false);
         method.addJavaDocLine(" */");
     }
 
     @Override
-    public void addSetterComment(Method method, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn) {
+    public void addSetterComment(Method method, IntrospectedTable introspectedTable,
+        IntrospectedColumn introspectedColumn) {
         this.addJavaElementComment(method, introspectedColumn);
     }
 
     @Override
-    public void addGetterComment(Method method, IntrospectedTable introspectedTable, IntrospectedColumn introspectedColumn) {
+    public void addGetterComment(Method method, IntrospectedTable introspectedTable,
+        IntrospectedColumn introspectedColumn) {
         this.addJavaElementComment(method, introspectedColumn);
     }
 }
