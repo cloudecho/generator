@@ -43,19 +43,19 @@ import org.mybatis.generator.internal.rules.Rules;
  * Base class for all code generator implementations. This class provides many
  * of the housekeeping methods needed to implement a code generator, with only
  * the actual code generation methods left unimplemented.
- * 
+ *
  * @author Jeff Butler
- * 
+ *
  */
 public abstract class IntrospectedTable {
-    
+
     /**
      * The Enum TargetRuntime.
      */
     public enum TargetRuntime {
-        
+
         /** The IBATI s2. */
-        IBATIS2, 
+        IBATIS2,
         /** The MYBATI s3. */
         MYBATIS3
     }
@@ -64,140 +64,140 @@ public abstract class IntrospectedTable {
      * The Enum InternalAttribute.
      */
     protected enum InternalAttribute {
-        
+
         /** The attr dao implementation type. */
         ATTR_DAO_IMPLEMENTATION_TYPE,
-        
+
         /** The attr dao interface type. */
         ATTR_DAO_INTERFACE_TYPE,
-        
+
         /** The attr primary key type. */
         ATTR_PRIMARY_KEY_TYPE,
-        
+
         /** The attr base record type. */
         ATTR_BASE_RECORD_TYPE,
-        
+
         /** The attr record with blobs type. */
         ATTR_RECORD_WITH_BLOBS_TYPE,
-        
+
         /** The attr example type. */
         ATTR_EXAMPLE_TYPE,
-        
+
         /** The ATT r_ ibati s2_ sq l_ ma p_ package. */
         ATTR_IBATIS2_SQL_MAP_PACKAGE,
-        
+
         /** The ATT r_ ibati s2_ sq l_ ma p_ fil e_ name. */
         ATTR_IBATIS2_SQL_MAP_FILE_NAME,
-        
+
         /** The ATT r_ ibati s2_ sq l_ ma p_ namespace. */
         ATTR_IBATIS2_SQL_MAP_NAMESPACE,
-        
+
         /** The ATT r_ mybati s3_ xm l_ mappe r_ package. */
         ATTR_MYBATIS3_XML_MAPPER_PACKAGE,
-        
+
         /** The ATT r_ mybati s3_ xm l_ mappe r_ fil e_ name. */
         ATTR_MYBATIS3_XML_MAPPER_FILE_NAME,
-        
+
         /** also used as XML Mapper namespace if a Java mapper is generated. */
         ATTR_MYBATIS3_JAVA_MAPPER_TYPE,
-        
+
         /** used as XML Mapper namespace if no client is generated. */
         ATTR_MYBATIS3_FALLBACK_SQL_MAP_NAMESPACE,
-        
+
         /** The attr fully qualified table name at runtime. */
         ATTR_FULLY_QUALIFIED_TABLE_NAME_AT_RUNTIME,
-        
+
         /** The attr aliased fully qualified table name at runtime. */
         ATTR_ALIASED_FULLY_QUALIFIED_TABLE_NAME_AT_RUNTIME,
-        
+
         /** The attr count by example statement id. */
         ATTR_COUNT_BY_EXAMPLE_STATEMENT_ID,
-        
+
         /** The attr delete by example statement id. */
         ATTR_DELETE_BY_EXAMPLE_STATEMENT_ID,
-        
+
         /** The attr delete by primary key statement id. */
         ATTR_DELETE_BY_PRIMARY_KEY_STATEMENT_ID,
-        
+
         /** The attr insert statement id. */
         ATTR_INSERT_STATEMENT_ID,
-        
+
         /** The attr insert selective statement id. */
         ATTR_INSERT_SELECTIVE_STATEMENT_ID,
-        
+
         /** The attr select all statement id. */
         ATTR_SELECT_ALL_STATEMENT_ID,
-        
+
         /** The attr select by example statement id. */
         ATTR_SELECT_BY_EXAMPLE_STATEMENT_ID,
-        
+
         /** The attr select by example with blobs statement id. */
         ATTR_SELECT_BY_EXAMPLE_WITH_BLOBS_STATEMENT_ID,
-        
+
         /** The attr select by primary key statement id. */
         ATTR_SELECT_BY_PRIMARY_KEY_STATEMENT_ID,
-        
+
         /** The attr update by example statement id. */
         ATTR_UPDATE_BY_EXAMPLE_STATEMENT_ID,
-        
+
         /** The attr update by example selective statement id. */
         ATTR_UPDATE_BY_EXAMPLE_SELECTIVE_STATEMENT_ID,
-        
+
         /** The attr update by example with blobs statement id. */
         ATTR_UPDATE_BY_EXAMPLE_WITH_BLOBS_STATEMENT_ID,
-        
+
         /** The attr update by primary key statement id. */
         ATTR_UPDATE_BY_PRIMARY_KEY_STATEMENT_ID,
-        
+
         /** The attr update by primary key selective statement id. */
         ATTR_UPDATE_BY_PRIMARY_KEY_SELECTIVE_STATEMENT_ID,
-        
+
         /** The attr update by primary key with blobs statement id. */
         ATTR_UPDATE_BY_PRIMARY_KEY_WITH_BLOBS_STATEMENT_ID,
-        
+
         /** The attr base result map id. */
         ATTR_BASE_RESULT_MAP_ID,
-        
+
         /** The attr result map with blobs id. */
         ATTR_RESULT_MAP_WITH_BLOBS_ID,
-        
+
         /** The attr example where clause id. */
         ATTR_EXAMPLE_WHERE_CLAUSE_ID,
-        
+
         /** The attr base column list id. */
         ATTR_BASE_COLUMN_LIST_ID,
-        
+
         /** The attr blob column list id. */
         ATTR_BLOB_COLUMN_LIST_ID,
-        
+
         /** The ATT r_ mybati s3_ updat e_ b y_ exampl e_ wher e_ claus e_ id. */
         ATTR_MYBATIS3_UPDATE_BY_EXAMPLE_WHERE_CLAUSE_ID,
-        
+
         /** The ATT r_ mybati s3_ sq l_ provide r_ type. */
         ATTR_MYBATIS3_SQL_PROVIDER_TYPE
     }
 
     /** The table configuration. */
     protected TableConfiguration tableConfiguration;
-    
+
     /** The fully qualified table. */
     protected FullyQualifiedTable fullyQualifiedTable;
-    
+
     /** The context. */
     protected Context context;
-    
+
     /** The rules. */
     protected Rules rules;
-    
+
     /** The primary key columns. */
     protected List<IntrospectedColumn> primaryKeyColumns;
-    
+
     /** The base columns. */
     protected List<IntrospectedColumn> baseColumns;
-    
+
     /** The blob columns. */
     protected List<IntrospectedColumn> blobColumns;
-    
+
     /** The target runtime. */
     protected TargetRuntime targetRuntime;
 
@@ -209,12 +209,12 @@ public abstract class IntrospectedTable {
 
     /** Internal attributes are used to store commonly accessed items by all code generators. */
     protected Map<IntrospectedTable.InternalAttribute, String> internalAttributes;
-    
+
     /**
      * Table remarks retrieved from database metadata
      */
     protected String remarks;
-    
+
     /**
      * Table type retrieved from database metadata
      */
@@ -335,7 +335,7 @@ public abstract class IntrospectedTable {
     /**
      * Returns true if any of the columns in the table are JDBC Dates (as
      * opposed to timestamps).
-     * 
+     *
      * @return true if the table contains DATE columns
      */
     public boolean hasJDBCDateColumns() {
@@ -363,7 +363,7 @@ public abstract class IntrospectedTable {
     /**
      * Returns true if any of the columns in the table are JDBC Times (as
      * opposed to timestamps).
-     * 
+     *
      * @return true if the table contains TIME columns
      */
     public boolean hasJDBCTimeColumns() {
@@ -392,7 +392,7 @@ public abstract class IntrospectedTable {
      * Returns the columns in the primary key. If the generatePrimaryKeyClass()
      * method returns false, then these columns will be iterated as the
      * parameters of the selectByPrimaryKay and deleteByPrimaryKey methods
-     * 
+     *
      * @return a List of ColumnDefinition objects for columns in the primary key
      */
     public List<IntrospectedColumn> getPrimaryKeyColumns() {
@@ -556,7 +556,7 @@ public abstract class IntrospectedTable {
      * Calculates an SQL Map file name for the table. Typically the name is
      * "XXXX_SqlMap.xml" where XXXX is the fully qualified table name (delimited
      * with underscores).
-     * 
+     *
      * @return the name of the SqlMap file
      */
     public String getIbatis2SqlMapFileName() {
@@ -584,10 +584,10 @@ public abstract class IntrospectedTable {
         if (namespace == null) {
             namespace = getMyBatis3FallbackSqlMapNamespace();
         }
-        
+
         return namespace;
     }
-    
+
     /**
      * Gets the my batis3 fallback sql map namespace.
      *
@@ -597,10 +597,10 @@ public abstract class IntrospectedTable {
         return internalAttributes
                 .get(InternalAttribute.ATTR_MYBATIS3_FALLBACK_SQL_MAP_NAMESPACE);
     }
-    
+
     /**
      * Calculates the package for the current table.
-     * 
+     *
      * @return the package for the SqlMap for the current table
      */
     public String getIbatis2SqlMapPackage() {
@@ -782,7 +782,7 @@ public abstract class IntrospectedTable {
 
         setIbatis2SqlMapNamespace(calculateIbatis2SqlMapNamespace());
         setMyBatis3FallbackSqlMapNamespace(calculateMyBatis3FallbackSqlMapNamespace());
-        
+
         setSqlMapFullyQualifiedRuntimeTableName(calculateSqlMapFullyQualifiedRuntimeTableName());
         setSqlMapAliasedFullyQualifiedRuntimeTableName(calculateSqlMapAliasedFullyQualifiedRuntimeTableName());
 
@@ -1281,7 +1281,7 @@ public abstract class IntrospectedTable {
 
         return sb.toString();
     }
-    
+
     /**
      * Checks if is sub packages enabled.
      *
@@ -1417,7 +1417,7 @@ public abstract class IntrospectedTable {
         StringBuilder sb = new StringBuilder();
         SqlMapGeneratorConfiguration config = context
                 .getSqlMapGeneratorConfiguration();
-        
+
         // config can be null if the Java client does not require XML
         if (config != null) {
             sb.append(config.getTargetPackage());
@@ -1477,7 +1477,7 @@ public abstract class IntrospectedTable {
     protected String calculateIbatis2SqlMapNamespace() {
         return fullyQualifiedTable.getIbatis2SqlMapNamespace();
     }
-    
+
     /**
      * Calculate my batis3 fallback sql map namespace.
      *
@@ -1536,7 +1536,7 @@ public abstract class IntrospectedTable {
 
     /**
      * This method can be used to initialize the generators before they will be called.
-     * 
+     *
      * This method is called after all the setX methods, but before getNumberOfSubtasks(), getGeneratedJavaFiles, and
      * getGeneratedXmlFiles.
      *
@@ -1552,7 +1552,7 @@ public abstract class IntrospectedTable {
      * This method should return a list of generated Java files related to this
      * table. This list could include various types of model classes, as well as
      * DAO classes.
-     * 
+     *
      * @return the list of generated Java files for this table
      */
     public abstract List<GeneratedJavaFile> getGeneratedJavaFiles();
@@ -1561,7 +1561,7 @@ public abstract class IntrospectedTable {
      * This method should return a list of generated XML files related to this
      * table. Most implementations will only return one file - the generated
      * SqlMap file.
-     * 
+     *
      * @return the list of generated XML files for this table
      */
     public abstract List<GeneratedXmlFile> getGeneratedXmlFiles();
@@ -1569,7 +1569,7 @@ public abstract class IntrospectedTable {
     /**
      * Denotes whether generated code is targeted for Java version 5.0 or
      * higher.
-     * 
+     *
      * @return true if the generated code makes use of Java5 features
      */
     public abstract boolean isJava5Targeted();
@@ -1577,7 +1577,7 @@ public abstract class IntrospectedTable {
     /**
      * This method should return the number of progress messages that will be
      * send during the generation phase.
-     * 
+     *
      * @return the number of progress messages
      */
     public abstract int getGenerationSteps();
@@ -1701,7 +1701,7 @@ public abstract class IntrospectedTable {
                 InternalAttribute.ATTR_IBATIS2_SQL_MAP_NAMESPACE,
                 sqlMapNamespace);
     }
-    
+
     /**
      * Sets the my batis3 fallback sql map namespace.
      *
@@ -1828,7 +1828,7 @@ public abstract class IntrospectedTable {
                 InternalAttribute.ATTR_MYBATIS3_SQL_PROVIDER_TYPE,
                 mybatis3SqlProviderType);
     }
-    
+
     /**
      * Gets the target runtime.
      *
@@ -1837,7 +1837,7 @@ public abstract class IntrospectedTable {
     public TargetRuntime getTargetRuntime() {
         return targetRuntime;
     }
-    
+
     /**
      * Checks if is immutable.
      *
@@ -1845,16 +1845,16 @@ public abstract class IntrospectedTable {
      */
     public boolean isImmutable() {
         Properties properties;
-        
+
         if (tableConfiguration.getProperties().containsKey(PropertyRegistry.ANY_IMMUTABLE)) {
             properties = tableConfiguration.getProperties();
         } else {
             properties = context.getJavaModelGeneratorConfiguration().getProperties();
         }
-        
+
         return isTrue(properties.getProperty(PropertyRegistry.ANY_IMMUTABLE));
     }
-    
+
     /**
      * Checks if is constructor based.
      *
@@ -1864,15 +1864,15 @@ public abstract class IntrospectedTable {
         if (isImmutable()) {
             return true;
         }
-        
+
         Properties properties;
-        
+
         if (tableConfiguration.getProperties().containsKey(PropertyRegistry.ANY_CONSTRUCTOR_BASED)) {
             properties = tableConfiguration.getProperties();
         } else {
             properties = context.getJavaModelGeneratorConfiguration().getProperties();
         }
-        
+
         return isTrue(properties.getProperty(PropertyRegistry.ANY_CONSTRUCTOR_BASED));
     }
 
