@@ -7,23 +7,22 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.data.mybatis.repository.support.MybatisRepository;
 import org.springframework.stereotype.Service;
 
-import com.zheng.common.base.MyBaseServiceImpl;
+import gallantry.core.service.AbstractBaseService;
 import ${modelJavaType};
 import ${repositoryJavaType};
 
 @Service
 @Lazy
-public class ${modelJavaName}ServiceImpl
-        extends MyBaseServiceImpl<${modelJavaName}, ${idJavaType}>
-        implements ${modelJavaName}Service {
+public class ${domainObjectName}ServiceImpl extends AbstractBaseService<${modelJavaName}, ${idJavaType}>
+        implements ${domainObjectName}Service {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(${modelJavaName}ServiceImpl.class);
 
     @Autowired
-    private ${modelJavaName}Repository ${modelJavaNameFirstLower}Repository;
+    private ${domainObjectName}Repository ${domainObjectNameFirstLower}Repository;
 
     @Override
     public MybatisRepository<${modelJavaName}, ${idJavaType}> repository() {
-        return ${modelJavaNameFirstLower}Repository;
+        return ${domainObjectNameFirstLower}Repository;
     }
 }

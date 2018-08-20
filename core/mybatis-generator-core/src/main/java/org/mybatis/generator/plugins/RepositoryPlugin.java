@@ -64,10 +64,9 @@ public class RepositoryPlugin extends PluginAdapter {
         Interface repoInterface = new Interface(type);
         repoInterface.setVisibility(JavaVisibility.PUBLIC);
 
-        // TODO composite primary key
         FullyQualifiedJavaType superInterface = new FullyQualifiedJavaType(
             "MybatisRepository<"
-                + introspectedTable.getFullyQualifiedTable().getDomainObjectName() + ", "
+                + introspectedTable.getFullyQualifiedTable().getDomainObjectName() + "Dto, "
                 + idType(introspectedTable) + ">");
         repoInterface.addSuperInterface(superInterface);
         repoInterface.addImportedType(new FullyQualifiedJavaType(

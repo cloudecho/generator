@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.zheng.common.base.MyBaseController;
-import com.zheng.common.base.MyBaseService;
+import gallantry.core.web.BaseController;
+import gallantry.core.service.BaseService;
 import ${modelJavaType};
 import ${modelJavaType}Dto;
 import ${servicePackage}.${modelJavaName}Service;
@@ -24,21 +24,21 @@ import io.swagger.annotations.ApiOperation;
 @Controller
 @Api(value = "${tableRemark}", description = "${tableDescription}")
 @RequestMapping("/${simpleModuleName}/${simpleEntityName}")
-public class ${modelJavaName}Controller extends MyBaseController<${modelJavaName}, ${idJavaType}> {
+public class ${domainObjectName}Controller extends BaseController<${modelJavaName}, ${idJavaType}> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(${modelJavaName}Controller.class);
 
     @Reference(mock = "true")
-    private ${modelJavaName}Service ${modelJavaNameFirstLower}Service;
+    private ${domainObjectName}Service ${modelJavaNameFirstLower}Service;
 
     @Override
-    protected MyBaseService<${modelJavaName}, ${idJavaType}> myBaseService() {
+    protected BaseService<${modelJavaName}, ${idJavaType}> myBaseService() {
         return ${modelJavaNameFirstLower}Service;
     }
 
     @Override
-    protected ${modelJavaName}Dto toCondition(String search) {
-        return new ${modelJavaName}Dto();
+    protected ${modelJavaName} toCondition(String search) {
+        return new ${modelJavaName}();
     }
 
     @Override

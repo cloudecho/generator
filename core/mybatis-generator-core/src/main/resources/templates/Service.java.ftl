@@ -1,8 +1,8 @@
 package ${servicePackage};
 
-import com.zheng.common.base.MyBaseService;
+import gallantry.core.service.BaseService;
 import ${modelJavaType};
 
-public interface ${modelJavaName}Service extends MyBaseService<${modelJavaName}, ${idJavaType}> {
+public interface ${domainObjectName}Service extends BaseService<${modelJavaName}, ${idJavaType}> {
 
 }

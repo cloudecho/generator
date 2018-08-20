@@ -1,10 +1,9 @@
 package ${servicePackage};
 
-import com.zheng.common.base.MyBaseServiceMock;
+import gallantry.core.service.BaseServiceMock;
 import ${modelJavaType};
 
-public class ${modelJavaName}ServiceMock
-        extends MyBaseServiceMock<${modelJavaName}, ${idJavaType}>
-        implements ${modelJavaName}Service {
+public class ${domainObjectName}ServiceMock extends BaseServiceMock<${modelJavaName}, ${idJavaType}>
+        implements ${domainObjectName}Service {
 
 }

@@ -37,10 +37,10 @@ public class ServiceAndControllerPlugin extends AbstractTextPlugin {
     @Override
     protected List<String> getTemplateNames() {
         return Arrays.asList(
-                "Service.java.ftl",
-                "ServiceImpl.java.ftl",
-                "ServiceMock.java.ftl",
-                "Controller.java.ftl"
+            "Service.java.ftl",
+            "ServiceImpl.java.ftl",
+            "ServiceMock.java.ftl",
+            "Controller.java.ftl"
         );
     }
 
@@ -48,17 +48,23 @@ public class ServiceAndControllerPlugin extends AbstractTextPlugin {
     protected Map<String, Object> getTemplateData(IntrospectedTable introspectedTable) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("servicePackage", getTargetPackage(SERVICE_SUFFIX, introspectedTable));
-        map.put("serviceImplPackage", getTargetPackage(SERVICE_SUFFIX, introspectedTable) + IMPL_PKG_SUFFIX);
+        map.put("serviceImplPackage",
+            getTargetPackage(SERVICE_SUFFIX, introspectedTable) + IMPL_PKG_SUFFIX);
+        map.put("domainObjectName", domainObjectName(introspectedTable));
+        map.put("domainObjectNameFirstLower",
+            StringUtility.firstLowerCase(domainObjectName(introspectedTable)));
         map.put("modelJavaType", introspectedTable.getBaseRecordType());
         map.put("modelJavaName", modelJavaName(introspectedTable));
-        map.put("modelJavaNameFirstLower", StringUtility.firstLowerCase(modelJavaName(introspectedTable)));
-        map.put("idJavaType", introspectedTable.getPrimaryKeyColumns().get(0).getFullyQualifiedJavaType().getShortName());
+        map.put("modelJavaNameFirstLower",
+            StringUtility.firstLowerCase(modelJavaName(introspectedTable)));
+        map.put("idJavaType", idJavaType(introspectedTable));
         map.put("repositoryJavaType", repositoryJavaType(introspectedTable));
 
         map.put("controllerPackage", getTargetPackage(CONTROLLER_SUFFIX, introspectedTable));
         map.put("tableRemark", remark(introspectedTable));
         map.put("tableDescription", description(introspectedTable));
-        map.put("idFieldFirstUpper", StringUtility.firstUpperCase(introspectedTable.getPrimaryKeyColumns().get(0).getJavaProperty()));
+        map.put("idFieldFirstUpper", StringUtility
+            .firstUpperCase(introspectedTable.getPrimaryKeyColumns().get(0).getJavaProperty()));
         map.put("simpleEntityName", simpleEntityName(introspectedTable));
         map.put("simpleModuleName", simpleModuleName(introspectedTable));
 
@@ -67,19 +73,33 @@ public class ServiceAndControllerPlugin extends AbstractTextPlugin {
 
     @Override
     protected String getFileName(String ftl, IntrospectedTable introspectedTable) {
-        return modelJavaName(introspectedTable) + ftl.replaceAll("\\.ftl$", "");
+        return domainObjectName(introspectedTable) + ftl.replaceAll("\\.ftl$", "");
     }
 
+    @Override
     protected String getTargetPackage(String ftl, IntrospectedTable introspectedTable) {
         String replacement = ftl.contains(CONTROLLER_SUFFIX) ?
-                CONTROLLER_SUFFIX.toLowerCase() : ftl.contains("Impl") ?
-                SERVICE_SUFFIX.toLowerCase() + IMPL_PKG_SUFFIX : SERVICE_SUFFIX.toLowerCase();
+            CONTROLLER_SUFFIX.toLowerCase() : ftl.contains("Impl") ?
+            SERVICE_SUFFIX.toLowerCase() + IMPL_PKG_SUFFIX : SERVICE_SUFFIX.toLowerCase();
         return context.getJavaModelGeneratorConfiguration().getTargetPackage()
-                .replaceAll("\\.(domain|model)", "." + replacement);
+            .replaceAll("\\.(domain|model)", "." + replacement);
+    }
+
+    private String domainObjectName(IntrospectedTable introspectedTable) {
+        return introspectedTable.getFullyQualifiedTable().getDomainObjectName();
     }
 
     private String modelJavaName(IntrospectedTable introspectedTable) {
-        return introspectedTable.getFullyQualifiedTable().getDomainObjectName();
+        return domainObjectName(introspectedTable) + "Dto";
+    }
+
+    private String idJavaType(IntrospectedTable introspectedTable) {
+        if (introspectedTable.getPrimaryKeyColumns().size() > 1) {
+            return domainObjectName(introspectedTable) + "Key";
+        } else {
+            return introspectedTable.getPrimaryKeyColumns().get(0).getFullyQualifiedJavaType()
+                .getShortName();
+        }
     }
 
     private String repositoryJavaType(IntrospectedTable introspectedTable) {
