@@ -16,7 +16,7 @@ import ${repositoryJavaType};
 public class ${domainObjectName}ServiceImpl extends AbstractBaseService<${modelJavaName}, ${idJavaType}>
         implements ${domainObjectName}Service {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(${modelJavaName}ServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(${domainObjectName}ServiceImpl.class);
 
     @Autowired
     private ${domainObjectName}Repository ${domainObjectNameFirstLower}Repository;

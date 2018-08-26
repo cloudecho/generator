@@ -53,7 +53,7 @@ public class ServiceAndControllerPlugin extends AbstractTextPlugin {
         map.put("domainObjectName", domainObjectName(introspectedTable));
         map.put("domainObjectNameFirstLower",
             StringUtility.firstLowerCase(domainObjectName(introspectedTable)));
-        map.put("modelJavaType", introspectedTable.getBaseRecordType());
+        map.put("modelJavaType", modelJavaType(introspectedTable));
         map.put("modelJavaName", modelJavaName(introspectedTable));
         map.put("modelJavaNameFirstLower",
             StringUtility.firstLowerCase(modelJavaName(introspectedTable)));
@@ -87,6 +87,10 @@ public class ServiceAndControllerPlugin extends AbstractTextPlugin {
 
     private String domainObjectName(IntrospectedTable introspectedTable) {
         return introspectedTable.getFullyQualifiedTable().getDomainObjectName();
+    }
+
+    private String modelJavaType(IntrospectedTable introspectedTable) {
+        return introspectedTable.getBaseRecordType() + "Dto";
     }
 
     private String modelJavaName(IntrospectedTable introspectedTable) {
