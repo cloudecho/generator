@@ -35,18 +35,20 @@ import org.mybatis.generator.config.PropertyRegistry;
 public class DtoPlugin extends PluginAdapter {
     static final String DTO_SUFFIX = "Dto";
 
+    @Override
     public boolean validate(List<String> warnings) {
         // this plugin is always valid
         return true;
     }
 
     @Override
-    public List<GeneratedJavaFile> contextGenerateAdditionalJavaFiles(IntrospectedTable introspectedTable) {
+    public List<GeneratedJavaFile> contextGenerateAdditionalJavaFiles(
+        IntrospectedTable introspectedTable) {
         GeneratedJavaFile gjf = new GeneratedJavaFile(
-                compilationUnit(introspectedTable),
-                context.getJavaModelGeneratorConfiguration().getTargetProject(),
-                context.getProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING),
-                context.getJavaFormatter());
+            compilationUnit(introspectedTable),
+            context.getJavaModelGeneratorConfiguration().getTargetProject(),
+            context.getProperty(PropertyRegistry.CONTEXT_JAVA_FILE_ENCODING),
+            context.getJavaFormatter());
 
         return Arrays.asList(gjf);
     }
@@ -56,10 +58,14 @@ public class DtoPlugin extends PluginAdapter {
     }
 
     private CompilationUnit compilationUnit(IntrospectedTable introspectedTable) {
-        FullyQualifiedJavaType type = new FullyQualifiedJavaType(fullTypeSpecification(introspectedTable));
+        FullyQualifiedJavaType type =
+            new FullyQualifiedJavaType(fullTypeSpecification(introspectedTable));
         TopLevelClass topClass = new TopLevelClass(type);
         topClass.setVisibility(JavaVisibility.PUBLIC);
         topClass.setSuperClass(introspectedTable.getBaseRecordType());
+        topClass.addImportedType("org.springframework.data.mybatis.annotations.Entity");
+        topClass.addAnnotation("@Entity(table = \"" + introspectedTable.getFullyQualifiedTable()
+            .getIntrospectedTableName() + "\")");
 
         return topClass;
     }
