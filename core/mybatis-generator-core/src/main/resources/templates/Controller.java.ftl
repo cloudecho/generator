@@ -16,7 +16,7 @@ public class ${domainObjectName}Controller extends BaseController<${modelJavaNam
 
     private static final Logger LOGGER = LoggerFactory.getLogger(${domainObjectName}Controller.class);
 
-    @Reference
+    @Reference(mock = "true")
     private ${domainObjectName}Service ${domainObjectNameFirstLower}Service;
 
     @Override
