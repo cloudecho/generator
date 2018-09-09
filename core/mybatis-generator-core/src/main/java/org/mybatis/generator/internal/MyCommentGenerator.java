@@ -15,14 +15,15 @@
  */
 package org.mybatis.generator.internal;
 
-import java.util.List;
-
 import org.mybatis.generator.api.CommentGenerator;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.Field;
+import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.api.dom.java.JavaElement;
+import org.mybatis.generator.api.dom.java.JavaVisibility;
 import org.mybatis.generator.api.dom.java.Method;
+import org.mybatis.generator.api.dom.java.Parameter;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.internal.util.StringUtility;
 
@@ -98,6 +99,35 @@ public class MyCommentGenerator extends DefaultCommentGenerator implements Comme
             .addStaticImport("org.springframework.data.mybatis.annotations.Id.GenerationType.AUTO");
         topLevelClass.addAnnotation(
             "@Entity(table = \"" + introspectedTable.getFullyQualifiedTable() + "\")");
+
+        if (isCompositeKey(introspectedTable)) {
+            //keyClass
+            final FullyQualifiedJavaType keyClass =
+                new FullyQualifiedJavaType(topLevelClass.getType().getShortName() + "Key");
+            //keyField
+            Field keyField =
+                new Field(StringUtility.firstLowerCase(keyClass.getShortName()), keyClass);
+            keyField.setVisibility(JavaVisibility.PRIVATE);
+            keyField.addAnnotation("@Id(strategy = AUTO, composite = true)");
+            keyField.setInitializationString("new " + keyClass + "()");
+            topLevelClass.addField(keyField);
+            //key getter
+            Method keyGetter = new Method("get" + keyClass);
+            keyGetter.setReturnType(keyClass);
+            keyGetter.setVisibility(JavaVisibility.PUBLIC);
+            keyGetter.addBodyLine("return this." + keyField.getName() + ";");
+            topLevelClass.addMethod(keyGetter);
+            //key setter
+            Method keySetter = new Method("set" + keyClass);
+            keySetter.setVisibility(JavaVisibility.PUBLIC);
+            keySetter.addParameter(new Parameter(keyClass, keyField.getName()));
+            keySetter.addBodyLine("this." + keyField.getName() + " = " + keyField.getName() + ";");
+            topLevelClass.addMethod(keySetter);
+        }
+    }
+
+    private boolean isCompositeKey(IntrospectedTable introspectedTable) {
+        return introspectedTable.getPrimaryKeyColumns().size() > 1;
     }
 
     @Override
@@ -109,11 +139,10 @@ public class MyCommentGenerator extends DefaultCommentGenerator implements Comme
         IntrospectedColumn introspectedColumn) {
         this.addJavaElementComment(field, introspectedColumn);
 
-        //@Id
-        List<IntrospectedColumn> primaryKeyColumns = introspectedTable.getPrimaryKeyColumns();
-        if (primaryKeyColumns.contains(introspectedColumn)) {
-            field.addAnnotation(String.format("@Id(strategy = AUTO%s)",
-                primaryKeyColumns.size() > 1 ? ", composite = true" : ""));
+        //CompositeKey
+        if (isCompositeKey(introspectedTable) &&
+            introspectedTable.getPrimaryKeyColumns().contains(introspectedColumn)) {
+            field.setVisibility(JavaVisibility.PROTECTED);
         }
 
         //@Reserved
@@ -127,6 +156,7 @@ public class MyCommentGenerator extends DefaultCommentGenerator implements Comme
         field.addAnnotation("@Column(name = \"" + introspectedColumn.getActualColumnName() + "\")");
     }
 
+    @Override
     public void addGeneralMethodComment(Method method,
         IntrospectedTable introspectedTable) {
         method.addJavaDocLine("/**");
